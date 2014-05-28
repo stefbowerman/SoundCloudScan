@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2014 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="soundcloud" unicode="&#xe800;" d="m34 178q0-4-10-4-6 0-10 4l-14 70 14 72q4 4 10 4 10 0 10-4l16-72z m102-38q0-8-12-8t-12 8l-12 108 12 166q0 8 12 8t12-8l14-166z m102 2q0-10-14-10t-14 8l-10 108 10 222q0 10 14 10t14-10l12-222z m102 0q0-10-16-10t-16 10l-8 106 8 224q0 10 16 10t16-10l10-224z m102 2q0-12-18-12-16 0-18 12l-6 104 6 256q4 14 18 14 18 0 18-14l8-256z m72-12q-14 0-14 14l0 396q0 10 12 14 36 14 84 14 88 0 153-58t73-142q24 10 50 10 52 0 90-37t38-87q0-52-38-89t-90-37z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>

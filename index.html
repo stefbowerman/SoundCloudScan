@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Coding for GOOD // API Example 3 - Sound Cloud</title>
+        <link href='http://fonts.googleapis.com/css?family=Yellowtail|VT323' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="/build/app.min.css">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="page-heading">
+                SoundCloud Scanner
+            </h1>
+            <div class="radio-container">
+                <div id="radio" class="radio clearfix">
+                    <div class="radio-logo">
+                        <i class="icon-soundcloud"></i>
+                    </div>
+                    <div class="depressed-section clearfix">
+                        <div class="depressed-col depressed-col-left">
+                            <div class="vertical-buttons">
+                                <button id="new-song" class="control-button">SCAN</button>
+                            </div>
+                        </div>
+                        <div class="depressed-col depressed-col-middle">
+                            <div class="radio-screen-container">
+                                <div class="radio-screen">
+                                    <div class="radio-screen-content">
+                                        <p id="radio-status">Initializing...</p>
+                                        <p id="track-title"></p>
+                                        <p id="track-artist"></p>
+                                        <p id="track-url"></p>
+                                    </div>
+                                </div>
+                                <div class="radio-screen-grid-overlay"></div>
+                            </div>
+                            <div class="button-row-horizontal" >
+                                <button class="control-button">Rap</button>
+                                <button class="control-button">Beats</button>
+                                <button class="control-button">R&amp;B</button>
+                                <button class="control-button">Soul</button>
+                                <button class="control-button">Jazz</button>
+                            </div>
+                        </div>
+                        <div class="depressed-col depressed-col-right">
+                            <div class="vertical-buttons">
+                                <button id="new-song" class="control-button">NPR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://connect.soundcloud.com/sdk.js"></script>
+        <script type="text/javascript" src="/build/app.min.js"></script>
+    </body>
+</html>

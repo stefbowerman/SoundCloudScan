@@ -8,11 +8,11 @@ $ ->
 
   loadSounds = ->
     SC.get '/tracks',
-      genres: 'electronic',
+      # genres: 'electronic',
       filter: 'streamable',
-      bpm:
-        from: 120
-      ,
+      # bpm:
+      #   from: 120
+      # ,
       (tracks) ->
 
         window.SCS.tracks = tracks;

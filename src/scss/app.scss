@@ -4,19 +4,18 @@
 
 @import "scaffolding";
 @import "fontello";
+@import "type";
+
+@import "control_button";
+@import "depressed";
+@import "radio";
+
+@import "utilities";
 
 body {
 
   @include gradient-vertical($black, #262626);
   -webkit-font-smoothing: antialiased;
-}
-
-p {
-  margin-bottom: 10px;
-}
-
-.clearfix {
-  @include clearfix;
 }
 
 .container {
@@ -35,174 +34,8 @@ p {
   color: #EEE;
 }
 
-.depressed-col {
-  float: left;
-}
-.depressed-col-left, .depressed-col-right {
-  width: 16.5%;
-}
-.depressed-col-middle {
-  width: 67%;
-}
 .vertical-buttons {
   text-align: center;
   padding: 0 20px;
 }
 
-.radio {
-  padding: 20px;
-  border: 3px solid #0E0E0E;
-  border-radius: 20px 20px 35px 35px;
-  background-color: #272727;
-  /* IE10 Consumer Preview */ 
-  background-image: -ms-radial-gradient(center top, circle closest-corner, #424242 0%, #272727 60%, #242424 100%);
-
-  /* Mozilla Firefox */ 
-  background-image: -moz-radial-gradient(center top, circle closest-corner, #424242 0%, #272727 60%, #242424 100%);
-
-  /* Opera */ 
-  background-image: -o-radial-gradient(center top, circle closest-corner, #424242 0%, #272727 60%, #242424 100%);
-
-  /* Webkit (Safari/Chrome 10) */ 
-  background-image: -webkit-gradient(radial, center top, 0, center top, 477, color-stop(0, #424242), color-stop(0.6, #272727), color-stop(1, #242424));
-
-  /* Webkit (Chrome 11+) */ 
-  background-image: -webkit-radial-gradient(center top, circle closest-corner, #424242 0%, #272727 60%, #242424 100%);
-
-  /* W3C Markup, IE10 Release Preview */ 
-  background-image: radial-gradient(circle closest-corner at center top, #424242 0%, #272727 60%, #242424 100%);
-
-  box-shadow: 0 0 40px -5px #030303;
-}
-
-.radio-logo {
-  font-family: 'Yellowtail';
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 20px;
-  color: #F3F3F3;
-  i {
-    display: inline-block;
-    height: 40px;
-    margin-top: -15px;
-    font-size: 50px;
-    color: $white;
-    text-shadow: 0 0 1px transparentize($white, 0.5), 0 0 6px $gray;
-  }
-}
-
-.depressed-section {
-  padding: 20px 0;
-  border-radius: 20px;
-  border: 6px solid;
-  border-top-color: #111;
-  border-left-color: #333;
-  border-right-color: #333;
-  border-bottom-color: #5F5F5F;
-  box-shadow: inset 0 6px 17px -2px #090909;
-}
-
-.radio-screen-container {
-  width: 100%;
-  position: relative;
-  margin: 0 auto;
-  float: left;
-  border-radius: 6px;
-  border-style: solid;
-  border-width: 8px 13px;
-  border-top-color: #1B1B1B;
-  border-left-color: #444;
-  border-bottom-color: #777;
-  border-right-color: #444;
-}
-
-$radio-screen-top: #3C57D9;
-$radio-screen-bottom: #3C83CF;
-
-.radio-screen {
-  padding: 20px;
-  height: 160px;
-  background: $radio-screen-top;
-  @include gradient-vertical($radio-screen-top, $radio-screen-bottom);
-  color: #1D1D1D;
-  text-align: center;
-  border-radius: 4px;
-  font-family: 'VT323';
-  font-size: 22px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: inset 0 5px 16px -1px #131313;
-  text-shadow: 0 0 1px 0 0 1px rgba(24, 68, 133, 0.5);
-}
-
-.radio-screen-content {
-  position: relative;
-  z-index: 1;
-}
-#radio-status {
-  font-size: 40px;
-}
-
-.radio-screen-grid-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url('/src/images/noisy_grid.png');
-  opacity: 0.18;
-}
-
-#track-url {
-  word-wrap: break-word;
-}
-
-.depressed-section .button-row-horizontal {
-  margin-top: 10px;
-  display: inline-block;
-  width: 100%;
-  padding: 0 10px;
-}
-.depressed-section .button-row-horizontal .control-button {
-  width: 91px;
-  float: left;
-  margin-left: 5px;
-}
-.depressed-section .button-row-horizontal .control-button:first-child {
-  margin-left: 0;
-}
-
-.control-button {
-  width: 100%;
-  background-color: #C4C4C4;
-  -webkit-appearance: none;
-  color: #FA344C;
-  text-transform: uppercase;
-  border-radius: 5px;
-  padding-top: 10px;
-  border: 2px solid rgba(240, 240, 240, 0.86);
-  border-bottom-color: #9E9E9E;
-  text-shadow: 0 0px 2px rgba(228, 228, 228, 0.87), 0 0 0px #310202, 0 0 1px rgba(0, 0, 0, 0.44);
-  font-size: 19px;
-  background: rgba(245,245,245,1); 
-  background: -moz-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(186,186,186,1) 100%); 
-  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(245,245,245,1)), color-stop(100%, rgba(186,186,186,1))); 
-  background: -webkit-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(186,186,186,1) 100%); 
-  background: -o-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(186,186,186,1) 100%); 
-  background: -ms-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(186,186,186,1) 100%); 
-  background: linear-gradient(to bottom, rgba(245,245,245,1) 0%, rgba(186,186,186,1) 100%); 
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#bababa', GradientType=0 );
-  box-shadow: 0 3px 10px -3px #000;
-}
-.control-button:hover {
-  cursor: pointer;
-}
-.control-button:active {
-  cursor: pointer;
-  -webkit-appearance: none;
-  outline: none;
-  box-shadow: inset 0 -2px 8px -3px rgba(32, 32, 32, 0.85);
-  border-color: #AFAFAF;
-  border-bottom-color: #5F5F5F;
-  -webkit-transition: all 100ms ease;
-}

@@ -1,0 +1,31 @@
+$control-button-background: #F5F5F5;
+
+.control-button {
+  width: 100%;
+  padding-top: 10px;
+  border-radius: 5px;
+  border: 2px solid transparentize($control-button-background, 0.13);
+  border-bottom-color: #9E9E9E;
+  color: #FA344C;
+  text-transform: uppercase;
+  text-shadow: 0 0 2px transparentize(#E4E4E4, 0.13), 
+               0 0 0 #310202, 
+               0 0 1px transparentize($black, 0.56);
+  font-size: 19px;
+  background: $control-button-background; 
+  box-shadow: 0 3px 10px -3px $black;
+  @include gradient-vertical(#F5F5F5, #BABABA);
+  -webkit-appearance: none;
+  &:hover {
+    cursor: pointer;
+  }
+  &:active {
+    cursor: pointer;
+    -webkit-appearance: none;
+    outline: none;
+    box-shadow: inset 0 -2px 8px -3px transparentize($gray-darker, 0.15);
+    border-color: #AFAFAF;
+    border-bottom-color: $control-button-background;
+    @include transition(all 100ms ease);
+  }
+}

@@ -1,12 +1,21 @@
 $control-button-background: #F5F5F5;
+$control-button-text-color: #FA344C;
+$control-button-padding-top: 12px;
+$control-button-padding-bottom: 3px;
+$control-button-padding-sides: 6px;
+
+$control-button-gradient-top: #F5F5F5;
+$control-button-gradient-bottom: #BABABA;
 
 .control-button {
+  position: relative;
   width: 100%;
-  padding-top: 10px;
+  padding: $control-button-padding-top $control-button-padding-sides $control-button-padding-bottom;
   border-radius: 5px;
   border: 2px solid transparentize($control-button-background, 0.13);
   border-bottom-color: #9E9E9E;
-  color: #FA344C;
+  color: $control-button-text-color;
+  font-family: 'Open Sans', sans-serif;
   text-transform: uppercase;
   text-shadow: 0 0 2px transparentize(#E4E4E4, 0.13), 
                0 0 0 #310202, 
@@ -14,18 +23,87 @@ $control-button-background: #F5F5F5;
   font-size: 19px;
   background: $control-button-background; 
   box-shadow: 0 3px 10px -3px $black;
-  @include gradient-vertical(#F5F5F5, #BABABA);
+  @include gradient-vertical($control-button-gradient-top, $control-button-gradient-bottom);
   -webkit-appearance: none;
   &:hover {
     cursor: pointer;
+  }
+  &:focus {
+    outline: none;
   }
   &:active {
     cursor: pointer;
     -webkit-appearance: none;
     outline: none;
+    padding-top: $control-button-padding-top + 1px;
+    padding-bottom: $control-button-padding-bottom - 1px;
+    color: darken($control-button-text-color, 5%);
     box-shadow: inset 0 -2px 8px -3px transparentize($gray-darker, 0.15);
     border-color: #AFAFAF;
     border-bottom-color: $control-button-background;
-    @include transition(all 100ms ease);
+    @include transition(all 50ms ease);
+  }
+
+  &.rockable {
+    padding: 37px $control-button-padding-sides;
+    &:before, &:after {
+      display: block;
+      width: 10px;
+      position: absolute;
+      left: 50%;
+      margin-left: -5px;
+      text-align: center;
+      font-size: 12px;
+    }
+    &:before {
+      content: "▲";
+      top: 5px;
+    }
+    &:after {
+      content: "▼";
+      bottom: 5px;
+    }
+    .rockable-target {
+      position: absolute;
+      z-index: 5;
+      left: 0;
+      right: 0;
+      &.target-top {
+        top: 0;
+        bottom: 50%;
+      }
+      &.target-bottom {
+        top: 50%;
+        bottom: 0;
+      }
+    }
+    &.rocked-up {
+      padding-top: 36px;
+      padding-bottom: 38px;
+      box-shadow: inset 0 6px 6px -3px #ADADAD;
+      border-top-color: #A0A0A0;
+      border-bottom-color: darken($control-button-gradient-bottom, 25%);
+      @include gradient-vertical(lighten($control-button-gradient-top, 5%), darken($control-button-gradient-bottom, 8%));
+      &:before {
+        top: 4px;
+      }
+      &:after {
+        bottom: 6px;
+      }
+    }
+    &.rocked-down {
+      padding-top: 38px;
+      padding-bottom: 36px;
+      box-shadow: none;
+      border-top-color: $control-button-gradient-top;
+      border-bottom-color: darken($control-button-gradient-bottom, 20%);
+      @include gradient-vertical($control-button-gradient-top, darken($control-button-gradient-bottom, 15%));
+      &:before {
+        top: 6px;
+      }
+      &:after {
+        bottom: 4px;
+      }
+    }
   }
 }

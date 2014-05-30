@@ -14,11 +14,14 @@
 
 
 $radio-screen-top: #3C57D9;
-$radio-screen-bottom: #3C83CF;
+$radio-screen-bottom: lighten($radio-screen-top, 8%); //#3C83CF
+
+$radio-screen-off-top: #556955;
+$radio-screen-off-bottom: lighten($radio-screen-off-top, 8%); //#647E64
 
 .radio-screen {
   padding: 15px;
-  height: 160px;
+  height: 149px;
   background: $radio-screen-top;
   @include gradient-vertical($radio-screen-top, $radio-screen-bottom);
   color: #1D1D1D;
@@ -31,7 +34,6 @@ $radio-screen-bottom: #3C83CF;
   box-shadow: inset 0 5px 16px -1px #131313;
   text-shadow: 0 0 1px rgba(24, 68, 133, 0.5);
 }
-
 
 .radio-screen-content {
   position: relative;

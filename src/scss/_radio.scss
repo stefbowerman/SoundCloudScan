@@ -27,4 +27,16 @@
   // /* W3C Markup, IE10 Release Preview */ 
   // background-image: radial-gradient(circle closest-corner at center top, #424242 0%, #272727 60%, #242424 100%);
 
+  &.powered-off {
+    .radio-screen {
+      background: $radio-screen-off-top;
+      @include gradient-vertical($radio-screen-off-top, $radio-screen-off-bottom);
+    }
+    .control-button {
+      color: #801623;
+    }
+  }
+  .control-button {
+    @include transition(150ms color ease);
+  }
 }

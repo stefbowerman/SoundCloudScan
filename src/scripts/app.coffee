@@ -13,6 +13,11 @@ $ ->
   window.scRadio   = new Radio()
   window.scRadioUI = new RadioUI('.radio', '.radio-screen', '#track-title', '#track-artist', '#track-url')
   window.scTrackLibrary = new TrackLibrary()
+  window.scRadioClock = new RadioClock('#radio-clock')
+
+  window.radioVolumeControl = new RadioVolumeControl('#radio-volume', audioElement)
+
+  # window.radioClock.startTicking()
   
   SC.initialize  
     client_id: 'a6edb50e62be5fdd8fad80afd621cdd9'
@@ -38,6 +43,7 @@ $ ->
     audioElement.addEventListener "canplay", ->
       # This seeking destroys the audio element :-/
       # audioElement.currentTime = Math.floor( (track.duration * 0.001) * 0.03 ) # ms -> sec, then seek to 3% into the track
+      
       audioElement.play()
       window.scRadioUI.finishScan(track) # Remove the 'scanning' and set the track info in the display
     , true
@@ -95,16 +101,9 @@ $ ->
 
   $('#new-song').on('click', loadAndPlayRandomTrack)
 
-  $('#volume-up').on 'click', ->
-    # Need to apply some math to ensure we have integers
-    newVol = audioElement.volume + 0.1
-    audioElement.volume = if newVol > 1 then 1 else newVol
-    console.log audioElement.volume
+  $('#volume-up').on 'click', -> window.radioVolumeControl.increaseVolume()
 
-  $('#volume-down').on 'click', ->
-    newVol = audioElement.volume - 0.1
-    audioElement.volume = if newVol < 0 then 0 else newVol
-    console.log audioElement.volume
+  $('#volume-down').on 'click', -> window.radioVolumeControl.decreaseVolume()
 
   $('.rockable-target').on('mousedown', (e) ->
     $rockableButton = $(@).parents('.control-button.rockable')
@@ -117,5 +116,6 @@ $ ->
 
   setTimeout ->
     do window.scRadioUI.powerOn
+    do window.scRadioClock.startTicking
     do loadAndPlayRandomTrack
   , 1200

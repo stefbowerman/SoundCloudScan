@@ -1,0 +1,14 @@
+.radio-volume-bar-container {
+  display: inline-block;
+  @include size(80px, 14px);
+  vertical-align: middle;
+  margin-top: -3px;
+  margin-left: 2px;
+  border: 2px solid #2C2C2C;
+  border-radius: 2px;
+}
+.radio-volume-bar {
+  height: 100%;
+  float: left;
+  background-color: #242424;
+}

@@ -66,3 +66,16 @@ $radio-screen-font-color: #1D1D1D;
     color: $radio-screen-font-color
   }
 }
+
+.radio-screen-top-bar {
+  position: relative;
+  margin-top: -10px;
+  font-size: 20px;
+  text-align: center;
+
+  .radio-volume {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

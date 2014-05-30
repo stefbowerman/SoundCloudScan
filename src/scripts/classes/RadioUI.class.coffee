@@ -20,7 +20,7 @@ class RadioUI
     @$songArtist.html artist
 
   setSongUrl: (url) ->
-    @$songUrl.html url
+    @$songUrl.html "<a href=\"#{url}\" target=\"_blank\">#{url}</a>"
 
   setNewSongProperties: (title, artist, url) ->
     @setSongTitle title

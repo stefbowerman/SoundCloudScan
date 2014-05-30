@@ -6,13 +6,14 @@
       @_playedTrackIds = []
       @loadedTracks = []
 
-    loadTracks: (apiOptions = {}) ->
+    loadTracks: (apiOptions = {}, callback = false) ->
       
       opts = $.extend({}, {filter: 'streamable'}, apiOptions)
       
       SC.get '/tracks', opts,
         (tracks) =>
           @loadedTracks = tracks
+          do callback if callback
           console.log('done loading tracks!')
 
     getRandomTrack: ->

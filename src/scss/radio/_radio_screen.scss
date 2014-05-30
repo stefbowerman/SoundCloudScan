@@ -19,6 +19,8 @@ $radio-screen-bottom: lighten($radio-screen-top, 8%); //#3C83CF
 $radio-screen-off-top: #556955;
 $radio-screen-off-bottom: lighten($radio-screen-off-top, 8%); //#647E64
 
+$radio-screen-font-color: #1D1D1D;
+
 .radio-screen {
   padding: 15px;
   height: 149px;
@@ -59,4 +61,8 @@ $radio-screen-off-bottom: lighten($radio-screen-off-top, 8%); //#647E64
 
 #track-url {
   word-wrap: break-word;
+  font-size: 20px;
+  a, a:hover, a:focus, a:active {
+    color: $radio-screen-font-color
+  }
 }

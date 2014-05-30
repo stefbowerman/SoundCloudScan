@@ -15,3 +15,7 @@ class Radio
       hash.bpm.to   = @bpmTo if @bpmTo?
 
     return hash
+
+  playTrack: (track) ->
+    console.log('radio is playing track')
+    console.log(track.id)

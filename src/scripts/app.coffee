@@ -4,64 +4,107 @@ window.SCS =
 window.SCApp = 
   _client_id : 'a6edb50e62be5fdd8fad80afd621cdd9'
 
-audioElement = null
+# Do check if audio is supported
+audioElement = document.createElement('audio')
+audioElement.volume = 0.5
 
 $ ->
 
   window.scRadio   = new Radio()
   window.scRadioUI = new RadioUI('.radio', '.radio-screen', '#track-title', '#track-artist', '#track-url')
-
-  playedTrackIDs = []
+  window.scTrackLibrary = new TrackLibrary()
   
   SC.initialize  
     client_id: 'a6edb50e62be5fdd8fad80afd621cdd9'
 
-  loadSounds = ->
-    SC.get '/tracks',
-      # window.scRadio.getApiOptionsHash()
-      # genres: 'electronic',
-      filter: 'streamable',
-      # bpm:
-      #   from: 120
-      # ,
-      (tracks) ->
+  scTrackLibrary.loadTracks( scRadio.getApiOptionsHash(), loadAndPlayRandomTrack )
 
-        window.SCS.tracks = tracks;
-        do playRandomSound
+  loadAndPlayRandomTrack = ->
+    track = scTrackLibrary.getRandomUnplayedTrack()
+    # duration = track.duration
 
-  getRandomTrack = ->
+    scRadio.playTrack(track)
 
-    track = window.SCS.tracks[ Math.floor((Math.random() * 50) + 1) ]
+    do audioElement.pause
+    do window.scRadioUI.scan # Set 'scanning' while song loads
 
-    if $.inArray(track.id, playedTrackIDs) is -1 # Not in array
-      playedTrackIDs.push track.id
-      return track
-    else 
-      do getRandomTrack
-
-  playRandomSound = ->
-    track = getRandomTrack()
-
-    do window.scRadioUI.scan
-    
     url = "#{track.stream_url}?allow_redirects=False&client_id=a6edb50e62be5fdd8fad80afd621cdd9"
-
-    audioElement = document.createElement('audio')
 
     audioElement.setAttribute('src', url)
 
+    # audioElement.addEventListener 'durationchange', (e) ->
+    #   console.log 'duration changed to ' + audioElement.duration
+    
     audioElement.addEventListener "canplay", ->
+      # This seeking destroys the audio element :-/
+      # audioElement.currentTime = Math.floor( (track.duration * 0.001) * 0.03 ) # ms -> sec, then seek to 3% into the track
       audioElement.play()
-      window.scRadioUI.finishScan(track)
+      window.scRadioUI.finishScan(track) # Remove the 'scanning' and set the track info in the display
     , true
 
-    setTimeout -> 
-      audioElement.pause()
-    , 1000
+    audioElement.addEventListener "ended", loadAndPlayRandomTrack
 
-    playedTrackIDs.push track.id
+    # setTimeout -> 
+    #   audioElement.pause()
+    # , 1000
 
-  $('#new-song').on('click', playRandomSound)
+  # loadSounds = ->
+  #   SC.get '/tracks',
+  #     # window.scRadio.getApiOptionsHash()
+  #     # genres: 'electronic',
+  #     filter: 'streamable',
+  #     # bpm:
+  #     #   from: 120
+  #     # ,
+  #     (tracks) ->
+
+  #       window.SCS.tracks = tracks;
+  #       do playRandomSound
+
+  # getRandomTrack = ->
+
+  #   track = window.SCS.tracks[ Math.floor((Math.random() * 50) + 1) ]
+
+  #   if $.inArray(track.id, playedTrackIDs) is -1 # Not in array
+  #     playedTrackIDs.push track.id
+  #     return track
+  #   else 
+  #     do getRandomTrack
+
+  # playRandomSound = ->
+  #   track = getRandomTrack()
+
+  #   do window.scRadioUI.scan
+    
+  #   url = "#{track.stream_url}?allow_redirects=False&client_id=a6edb50e62be5fdd8fad80afd621cdd9"
+
+  #   audioElement = document.createElement('audio')
+
+  #   audioElement.setAttribute('src', url)
+
+  #   audioElement.addEventListener "canplay", ->
+  #     audioElement.play()
+  #     window.scRadioUI.finishScan(track)
+  #   , true
+
+    # setTimeout -> 
+    #   audioElement.pause()
+    # , 1000
+
+  #   playedTrackIDs.push track.id
+
+  $('#new-song').on('click', loadAndPlayRandomTrack)
+
+  $('#volume-up').on 'click', ->
+    # Need to apply some math to ensure we have integers
+    newVol = audioElement.volume + 0.1
+    audioElement.volume = if newVol > 1 then 1 else newVol
+    console.log audioElement.volume
+
+  $('#volume-down').on 'click', ->
+    newVol = audioElement.volume - 0.1
+    audioElement.volume = if newVol < 0 then 0 else newVol
+    console.log audioElement.volume
 
   $('.rockable-target').on('mousedown', (e) ->
     $rockableButton = $(@).parents('.control-button.rockable')
@@ -74,5 +117,5 @@ $ ->
 
   setTimeout ->
     do window.scRadioUI.powerOn
-    do loadSounds
+    do loadAndPlayRandomTrack
   , 1200

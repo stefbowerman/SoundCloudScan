@@ -1,21 +1,34 @@
 class Radio
 
-  constructor: ->
+  constructor: (elRadio, elScreen, elRadioGenre) ->
+    @isOn = false
     @genre =   null
-    @bpmFrom = null 
-    @bpmTo =   null
+
+    @$radio       = $(elRadio)
+    @$radioScreen = $(elScreen)
+
+    @$radioGenre  = $(elRadioGenre)
 
   getApiOptionsHash: ->
     hash = {}
     hash.filter = 'streamable'
-    hash.genres = @genre if @genre?
-    if @bpmFrom || @bpmTo
-      hash.bpm = {}
-      hash.bpm.from = @bpmFrom if @bpmFrom?
-      hash.bpm.to   = @bpmTo if @bpmTo?
+    hash.genres = @genre if @genre? && @genre.length
 
     return hash
 
-  playTrack: (track) ->
-    console.log('radio is playing track')
-    console.log(track.id)
+  setGenre: (genre = null) ->
+    @genre = if genre is 'all' then null else genre
+
+  powerOnUI: ->
+    @$radio.removeClass 'powered-off'
+
+  powerOffUI: ->
+    @$radio.addClass 'powered-off'
+
+  startScan: ->
+    $("#track-information").hide()
+    $('#radio-status').html('Scanning').show()
+
+  finishScan: (song) ->
+    $("#track-information").show()
+    $('#radio-status').html('').hide()

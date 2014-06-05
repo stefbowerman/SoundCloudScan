@@ -19,17 +19,20 @@
                     <div class="depressed-section clearfix">
                         <div class="depressed-col depressed-col-left">
                             <div class="vertical-buttons">
+                                <button id="radio-power" class="control-button">pwr</button>
                                 <button id="new-song" class="control-button">scan</button>
-                                <button class="control-button">FM</button>
-                                <button class="control-button">CD</button>
-                                <button class="control-button">SAT</button>
+<!--                                 <button class="control-button" disabled="disabled">next</button>
+                                <button class="control-button" disabled="disabled">prev</button> -->
                             </div>
                         </div>
                         <div class="depressed-col depressed-col-middle">
                             <div class="radio-screen-container">
                                 <div class="radio-screen">
                                     <div class="radio-screen-content">
-                                        <div class="radio-screen-top-bar">
+                                        <div class="radio-screen-top-bar" style="display:none">
+                                            <div id="radio-genre" class="radio-genre">
+
+                                            </div>
                                             <span id="radio-clock" class="radio-clock"></span>
                                             <div id="radio-volume" class="radio-volume" style="display: none;">
                                                 Vol
@@ -38,20 +41,31 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <p id="radio-status">Initializing...</p>
-                                        <p id="track-title"></p>
-                                        <p id="track-artist"></p>
-                                        <p id="track-url"></p>
+                                        <p id="radio-status"></p>
+                                        <div id="track-information">
+                                            <p id="track-title"></p>
+                                            <p id="track-artist"></p>
+                                            <p id="track-url"></p>
+                                        </div>
+<!--                                         <div class="radio-screen-bottom-bar">
+                                            <div class="station-indicators">
+                                                <div class="station-indicator indicator-current indicator-"></div>
+                                                <div class="station-indicator indicator-rap"></div>
+                                                <div class="station-indicator indicator-dance"></div>
+                                                <div class="station-indicator indicator-jazz"></div>
+                                                <div class="station-indicator indicator-rock"></div>
+                                            </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="radio-screen-grid-overlay"></div>
                             </div>
                             <div class="button-row-horizontal" >
-                                <button class="control-button">Rap</button>
-                                <button class="control-button">Beats</button>
-                                <button class="control-button">R&amp;B</button>
-                                <button class="control-button">Soul</button>
-                                <button class="control-button">Jazz</button>
+                                <button class="control-button" data-genre="all">All</button>
+                                <button class="control-button" data-genre="rap">Rap</button>
+                                <button class="control-button" data-genre="dance">Dance</button>
+                                <button class="control-button" data-genre="jazz">Jazz</button>
+                                <button class="control-button" data-genre="rock">Rock</button>
                             </div>
                         </div>
                         <div class="depressed-col depressed-col-right">
@@ -61,11 +75,11 @@
                                     <span class="rockable-button-label">vol</span>
                                     <div id="volume-down" class="rockable-target target-bottom"></div>
                                 </button>
-                                <button class="control-button rockable">
+<!--                                 <button class="control-button rockable">
                                     <div class="rockable-target target-top"></div>
                                     <span class="rockable-button-label">bpm</span>
                                     <div class="rockable-target target-bottom"></div>
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                     </div>

@@ -1,6 +1,6 @@
  do (window, SC) ->
 
-  class window.TrackLibrary
+  class window.RadioTrackLibrary
     
     constructor: () ->
       @_playedTrackIds = []

@@ -1,0 +1,15 @@
+HTML Transitions
+
+PowerOn
+==============
+Screen says "Welcome" large and in the center
+Same Time
+  Screen Lights Up
+  Top Bar is displayed with clock
+  Screen says 'Scanning' large and in the center
+
+PowerOff
+==============
+Screen dims
+Top Bar disappears
+Screen says 'Goodbye' large and in the center

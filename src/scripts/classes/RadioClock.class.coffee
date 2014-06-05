@@ -17,10 +17,11 @@ class RadioClock
     d = new Date()
     hours = d.getHours()
     mins  = d.getMinutes()
-    timeSuffix = 'A.M.'
+    mins = "0#{mins}" if mins < 10
+    timeSuffix = 'AM'
 
     if hours > 12
       hours = hours - 12
-      timeSuffix = 'P.M.'
+      timeSuffix = 'PM'
 
     @$targetEl.html "#{hours}:#{mins} #{timeSuffix}"

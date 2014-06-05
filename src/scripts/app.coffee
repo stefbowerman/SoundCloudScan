@@ -1,23 +1,20 @@
-window.SCS =
-  tracks : null
-
-window.SCApp = 
-  _client_id : 'a6edb50e62be5fdd8fad80afd621cdd9'
-
-# Do check if audio is supported
 audioElement = document.createElement('audio')
-audioElement.volume = 0.5
+
+window.audioIsSupported = !!(audioElement.canPlayType && audioElement.canPlayType('audio/mpeg;').replace(/no/, ''));
+
+audioElement.volume = 0 if audioIsSupported
+
+$audio = $(audioElement)
 
 $ ->
 
-  window.scRadio   = new Radio()
-  window.scRadioUI = new RadioUI('.radio', '.radio-screen', '#track-title', '#track-artist', '#track-url')
-  window.scTrackLibrary = new TrackLibrary()
-  window.scRadioClock = new RadioClock('#radio-clock')
+  window.scRadio        = new Radio('.radio', '.radio-screen', '#radio-genre')
+  window.scTrackLibrary = new RadioTrackLibrary()
+  window.scCurrentTrack = new RadioCurrentTrack()
+  window.scRadioClock   = new RadioClock('#radio-clock')
+  window.scRadioGenre   = new RadioGenre('#radio-genre')
 
-  window.radioVolumeControl = new RadioVolumeControl('#radio-volume', audioElement)
-
-  # window.radioClock.startTicking()
+  window.radioVolumeControl = new RadioVolumeControl('#radio-volume')
   
   SC.initialize  
     client_id: 'a6edb50e62be5fdd8fad80afd621cdd9'
@@ -26,85 +23,73 @@ $ ->
 
   loadAndPlayRandomTrack = ->
     track = scTrackLibrary.getRandomUnplayedTrack()
-    # duration = track.duration
 
-    scRadio.playTrack(track)
-
-    do audioElement.pause
-    do window.scRadioUI.scan # Set 'scanning' while song loads
+    do $audio.get(0).pause
+    do window.scRadio.startScan # Set 'scanning' while song loads
 
     url = "#{track.stream_url}?allow_redirects=False&client_id=a6edb50e62be5fdd8fad80afd621cdd9"
 
-    audioElement.setAttribute('src', url)
+    $audio.attr('src', url)
+    .bind 'canplay', ->
 
-    # audioElement.addEventListener 'durationchange', (e) ->
-    #   console.log 'duration changed to ' + audioElement.duration
-    
-    audioElement.addEventListener "canplay", ->
-      # This seeking destroys the audio element :-/
-      # audioElement.currentTime = Math.floor( (track.duration * 0.001) * 0.03 ) # ms -> sec, then seek to 3% into the track
-      
+      window.scCurrentTrack.setTrack( track ) # Set the track info in the display
+      window.scRadio.finishScan(track) # Remove the 'scanning' part
       audioElement.play()
-      window.scRadioUI.finishScan(track) # Remove the 'scanning' and set the track info in the display
-    , true
 
-    audioElement.addEventListener "ended", loadAndPlayRandomTrack
+    .bind 'ended error', loadAndPlayRandomTrack  
 
-    # setTimeout -> 
-    #   audioElement.pause()
-    # , 1000
+  powerOffRadio = ->
 
-  # loadSounds = ->
-  #   SC.get '/tracks',
-  #     # window.scRadio.getApiOptionsHash()
-  #     # genres: 'electronic',
-  #     filter: 'streamable',
-  #     # bpm:
-  #     #   from: 120
-  #     # ,
-  #     (tracks) ->
+    do audioElement.pause
+    do window.scRadio.powerOffUI
+    $("#track-information").hide()
+    do window.scRadioClock.stopTicking
+    $('#radio-clock').html('')
+    $('.radio-screen-top-bar').hide()
+    $('#radio-status').html('Goodbye').show()
+    setTimeout(->
+      $('#radio-status').hide()
+      window.scRadio.isOn = false
+    , 1500)
 
-  #       window.SCS.tracks = tracks;
-  #       do playRandomSound
+  powerOnRadio = ->
 
-  # getRandomTrack = ->
+    do window.scRadio.powerOnUI
+    $('.radio-screen-top-bar').show()
+    do window.scRadioClock.startTicking
+    $('#radio-status').html('Welcome').show()
 
-  #   track = window.SCS.tracks[ Math.floor((Math.random() * 50) + 1) ]
+    setTimeout( ->
+      do loadAndPlayRandomTrack
+      window.scRadio.isOn = true      
+    , 1000)
 
-  #   if $.inArray(track.id, playedTrackIDs) is -1 # Not in array
-  #     playedTrackIDs.push track.id
-  #     return track
-  #   else 
-  #     do getRandomTrack
+  toggleRadioOnOff = ->
+    if window.scRadio.isOn then powerOffRadio() else powerOnRadio()
 
-  # playRandomSound = ->
-  #   track = getRandomTrack()
+  $("#radio-power").on 'click', toggleRadioOnOff
 
-  #   do window.scRadioUI.scan
-    
-  #   url = "#{track.stream_url}?allow_redirects=False&client_id=a6edb50e62be5fdd8fad80afd621cdd9"
+  $('#new-song').on 'click', loadAndPlayRandomTrack
 
-  #   audioElement = document.createElement('audio')
+  $('#volume-up').on 'click', -> 
+    window.audioElement.volume = window.radioVolumeControl.increaseVolume()
 
-  #   audioElement.setAttribute('src', url)
+  $('#volume-down').on 'click', -> 
+    window.audioElement.volume = window.radioVolumeControl.decreaseVolume()
 
-  #   audioElement.addEventListener "canplay", ->
-  #     audioElement.play()
-  #     window.scRadioUI.finishScan(track)
-  #   , true
+  $('[data-genre]').on 'click', -> 
+    # TODO - Deal with this messy genre issue
+    genre = $(this).data('genre')
 
-    # setTimeout -> 
-    #   audioElement.pause()
-    # , 1000
+    return false if window.scRadioGenre.genre is genre
 
-  #   playedTrackIDs.push track.id
+    window.scRadioGenre.setGenre $(this).data('genre')
+             
+    window.scRadio.setGenre $(this).data('genre')
 
-  $('#new-song').on('click', loadAndPlayRandomTrack)
+    scTrackLibrary.loadTracks( scRadio.getApiOptionsHash(), loadAndPlayRandomTrack )
 
-  $('#volume-up').on 'click', -> window.radioVolumeControl.increaseVolume()
-
-  $('#volume-down').on 'click', -> window.radioVolumeControl.decreaseVolume()
-
+  # Apply effect to rockable buttons depending on click location
   $('.rockable-target').on('mousedown', (e) ->
     $rockableButton = $(@).parents('.control-button.rockable')
     $rockableButton.addClass('rocked-up') if $(@).hasClass('target-top')
@@ -114,8 +99,10 @@ $ ->
     $(@).parents('.control-button.rockable').removeClass('rocked-up rocked-down')
   )
 
-  setTimeout ->
-    do window.scRadioUI.powerOn
-    do window.scRadioClock.startTicking
-    do loadAndPlayRandomTrack
-  , 1200
+  if window. audioIsSupported
+    setTimeout ->
+      powerOnRadio()
+    , 1000
+  else
+    $('#radio-status').html("Audio is not supported by your browser").show()
+

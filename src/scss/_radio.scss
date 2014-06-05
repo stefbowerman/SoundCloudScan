@@ -32,6 +32,7 @@
   &.powered-off {
     .radio-screen {
       background: $radio-screen-off-top;
+      box-shadow: inset 0 5px 16px -1px #131313;
       @include gradient-vertical($radio-screen-off-top, $radio-screen-off-bottom);
     }
     .control-button {

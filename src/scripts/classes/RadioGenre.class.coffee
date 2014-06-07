@@ -19,6 +19,12 @@ class RadioGenre
 
     return @genre
 
+  getGenre: ->
+    @genre
+
+  getApiGenre: ->
+    if @genre is 'all' then null else @genre
+
   showGenre: -> 
     clearTimeout(@displayTimeout)
 

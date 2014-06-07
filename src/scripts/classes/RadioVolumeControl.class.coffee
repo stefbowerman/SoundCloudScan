@@ -4,7 +4,7 @@ class RadioVolumeControl
     @$targetEl = $(targetEl)
     @displayTimeout = null
     @displayTimeoutDuration = 2500
-    @currentVol = 0.5
+    @currentVol = 0.2
 
   # Increases volume by 0.1
   # Returns volume as a float (0.0 -> 1.0)

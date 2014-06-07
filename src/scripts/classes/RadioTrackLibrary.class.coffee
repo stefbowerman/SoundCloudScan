@@ -2,28 +2,41 @@
 
   class window.RadioTrackLibrary
     
-    constructor: () ->
+    constructor: (@_scClientId) ->
       @_playedTrackIds = []
       @loadedTracks = []
+      @unplayedTracks = []
+      @playedTracks = []
+      @currentApiOpts = {}
+
+      SC.initialize
+        client_id: 'a6edb50e62be5fdd8fad80afd621cdd9'
 
     loadTracks: (apiOptions = {}, callback = false) ->
       
-      opts = $.extend({}, {filter: 'streamable'}, apiOptions)
+      @currentApiOpts = $.extend({}, {filter: 'streamable'}, apiOptions) # Cache the current options
       
-      SC.get '/tracks', opts,
+      SC.get '/tracks', @currentApiOpts,
         (tracks) =>
-          @loadedTracks = tracks
+          @unplayedTracks = tracks
           do callback if callback
           console.log('done loading tracks!')
 
-    getRandomTrack: ->
-      @loadedTracks[ Math.floor((Math.random() * @loadedTracks.length) + 1) ]
-
     getRandomUnplayedTrack: ->
-      track = @getRandomTrack()
 
-      if $.inArray(track.id, @_playedTrackIDs) is -1 # Not in array
-        @_playedTrackIds.push track.id
-        return track
-      else 
-        do @getRandomTrack
+      randomIndex =  Math.floor((Math.random() * @unplayedTracks.length) + 1) # Random number inside the length of the array
+
+      track =  @unplayedTracks[ randomIndex ] # Retrieve the track at that index
+
+      @unplayedTracks.splice(randomIndex, 1) # Remove that track from the unplayedTrack array
+
+      @playedTracks.push track # Add that track to the array of playedTracks
+
+      # console.log "unplayed track length #{@unplayedTracks.length}"
+      # console.log "played track length #{@playedTracks.length}"
+
+      do @loadTracks if @unplayedTracks.length < 3 # grab some more tracks if we get close to running out
+
+      return track
+      
+

@@ -63,6 +63,7 @@ $radio-screen-font-color: #1D1D1D;
 #track-title {
   margin-bottom: 0;
   font-size: 25px;
+  padding: 0 1px;
   @include text-overflow();
 }
 #track-artist {
@@ -71,8 +72,15 @@ $radio-screen-font-color: #1D1D1D;
 #track-url {
   word-wrap: break-word;
   font-size: $font-size-large;
-  a, a:hover, a:focus, a:active {
-    color: $radio-screen-font-color
+  a { 
+    color: $radio-screen-font-color;
+    &:hover, 
+    &:focus, 
+    &:active {
+      color: $radio-screen-font-color;
+      text-decoration: none;
+      border-bottom: 2px solid lighten($radio-screen-font-color, 5%);
+    }
   }
 }
 

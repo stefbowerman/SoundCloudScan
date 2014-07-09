@@ -1,42 +1,42 @@
 class RadioVolumeControl
 
-  constructor: (targetEl) ->
+  constructor: (targetEl, initialVolume = 0.5) ->
     @$targetEl = $(targetEl)
     @displayTimeout = null
     @displayTimeoutDuration = 2500
-    @currentVol = 0.2
+    @currentVolume = initialVolume
 
-  # Increases volume by 0.1
-  # Returns volume as a float (0.0 -> 1.0)
-  increaseVolume: ->
-    do @showVolumeMeter
+  _changeVolume: (amount) ->
+    return if !amount
 
     # Need to apply some math to ensure we have integers
-    newVol = @currentVol + 0.1
-    newVol = if newVol > 1 then 1 else newVol
+    newVol = @currentVolume + amount
 
-    @currentVol = newVol
-    
-    @updateVolumeBarWidth( newVol )
+    # Apply limits
+    newVol = 1 if newVol > 1 
+    newVol = 0 if newVol < 0
+
+    # Set new volume
+    @currentVolume = newVol
+
+    # Update UI
+    @updateVolumeBarWidth()
+    @showVolumeMeter()
 
     return newVol
-  
-  # Decreases volume by 0.1
+
+  # Increases volume by passed in amount (default: 0.1)
   # Returns volume as a float (0.0 -> 1.0)
-  decreaseVolume:  ->
-    do @showVolumeMeter
+  increaseVolume: (amount = 0.1) ->
+    @_changeVolume(amount)
+  
+  # Decreases volume by passed in amount (default: 0.1)
+  # Returns volume as a float (0.0 -> 1.0)
+  decreaseVolume: (amount = 0.1) ->
+    @_changeVolume(-amount)
 
-    newVol = @currentVol - 0.1
-    newVol = if newVol < 0 then 0 else newVol
-
-    @currentVol = newVol
-
-    @updateVolumeBarWidth( newVol )
-
-    return newVol
-
-  updateVolumeBarWidth: (volume) ->
-    $('.radio-volume-bar').width( volume * 100 + "%" )
+  updateVolumeBarWidth: =>
+    $('.radio-volume-bar').width( @currentVolume * 100 + "%" )
 
   showVolumeMeter: -> 
     clearTimeout(@displayTimeout)

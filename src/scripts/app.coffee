@@ -2,6 +2,8 @@ audioElement = document.createElement('audio')
 
 window.audioIsSupported = !!(audioElement.canPlayType && audioElement.canPlayType('audio/mpeg;').replace(/no/, ''));
 
+SC_CLIENT_ID = 'a6edb50e62be5fdd8fad80afd621cdd9'
+
 $ ->
 
   window.scRadioUI      = new RadioUI('.radio', "#track-information", '#radio-status')
@@ -10,11 +12,11 @@ $ ->
   window.scRadioClock   = new RadioClock('#radio-clock')
   window.scRadioGenre   = new RadioGenre('#radio-genre')
 
-  window.radioVolumeControl = new RadioVolumeControl('#radio-volume')
+  window.radioVolumeControl = new RadioVolumeControl('#radio-volume', 0.5)
 
   scTrackLibrary.loadTracks( {}, loadAndPlayRandomTrack )
 
-  audioElement.volume = window.radioVolumeControl.currentVol if audioIsSupported
+  audioElement.volume = window.radioVolumeControl.currentVolume if audioIsSupported
 
   $audio = $(audioElement)
 
@@ -26,7 +28,7 @@ $ ->
 
     do $audio.get(0).pause
 
-    url = "#{track.stream_url}?allow_redirects=False&client_id=a6edb50e62be5fdd8fad80afd621cdd9"
+    url = "#{track.stream_url}?allow_redirects=False&client_id=#{SC_CLIENT_ID}"
 
     $audio.attr('src', url)
     .bind 'canplay', ->
@@ -35,7 +37,7 @@ $ ->
       window.scRadioUI.finishScan() # Remove the 'scanning' part
       audioElement.play()
 
-    .bind 'ended error', loadAndPlayRandomTrack  
+    .bind 'ended error', loadAndPlayRandomTrack
 
   powerOffRadio = ->
 
@@ -61,16 +63,16 @@ $ ->
     setTimeout( ->
       # do window.scRadioGenre.showGenre
       do loadAndPlayRandomTrack
-      window.scRadioUI.isOn = true      
+      window.scRadioUI.isOn = true
     , 1000)
 
   toggleRadioOnOff = ->
     if window.scRadioUI.isOn then powerOffRadio() else powerOnRadio()
 
   getApiOptionsHash = ->
-    hash = {}
-    hash.filter = 'streamable'
-    hash.genres = window.scRadioGenre.getApiGenre()
+    hash = 
+      filter : 'streamable'
+      genres : window.scRadioGenre.getApiGenre()
 
     return hash
 
@@ -78,19 +80,21 @@ $ ->
 
   $('#new-song').on 'click', loadAndPlayRandomTrack
 
-  $('#volume-up').on 'click', -> 
-    audioElement.volume = window.radioVolumeControl.increaseVolume()
+  $('#volume-up').on 'click', ->
+    window.radioVolumeControl.increaseVolume()
+    audioElement.volume = window.radioVolumeControl.currentVolume
 
-  $('#volume-down').on 'click', -> 
-    audioElement.volume = window.radioVolumeControl.decreaseVolume()
+  $('#volume-down').on 'click', ->
+    window.radioVolumeControl.decreaseVolume()
+    audioElement.volume = window.radioVolumeControl.currentVolume
 
-  $('[data-genre]').on 'click', -> 
+  $('[data-genre]').on 'click', ->
     newGenre = $(this).data('genre')
 
     if window.scRadioGenre.genre is newGenre
       do window.scRadioGenre.showGenre
-      return false 
-             
+      return false
+
     window.scRadioGenre.setGenre newGenre #
 
     scTrackLibrary.loadTracks( getApiOptionsHash(), ->
@@ -114,4 +118,3 @@ $ ->
     , 1000
   else
     $('#radio-status').html("Audio is not supported by your browser").show()
-

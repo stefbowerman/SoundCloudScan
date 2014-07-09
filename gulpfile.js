@@ -2,16 +2,17 @@
 var gulp = require('gulp');
 
 // include plug-ins
-var jshint = require('gulp-jshint');
-var gulpif = require('gulp-if');
-var gutil  = require('gulp-util');
-var sass   = require('gulp-sass');
-var minCSS = require('gulp-minify-css');
-var rename = require('gulp-rename');
-var coffee = require('gulp-coffee');
-var uglify = require('gulp-uglify');
-var concat = require('gulp-concat');
- 
+var jshint      = require('gulp-jshint');
+var gulpif      = require('gulp-if');
+var gutil       = require('gulp-util');
+var sass        = require('gulp-sass');
+var minCSS      = require('gulp-minify-css');
+var rename      = require('gulp-rename');
+var coffee      = require('gulp-coffee');
+var uglify      = require('gulp-uglify');
+var concat      = require('gulp-concat');
+var browserSync = require('browser-sync');
+
 var appRoot = '.';
 
 var paths = {
@@ -33,7 +34,8 @@ gulp.task('sass', function(){
     .pipe(sass())
     .pipe(minCSS())
     .pipe(rename('app.min.css'))
-    .pipe(gulp.dest(paths.build));
+    .pipe(gulp.dest(paths.build))
+    .pipe(browserSync.reload({stream:true, once:true}));
 
     // console.log('Finished compiling sass');
 });
@@ -42,15 +44,27 @@ gulp.task('sass', function(){
 gulp.task('scripts', function(){
     gulp.src(paths.scripts)
     .pipe(gulpif(/[.]coffee$/, coffee({bare:true}).on('error', gutil.log)))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(concat('app.min.js'))
-    .pipe(gulp.dest(paths.build));
+    .pipe(gulp.dest(paths.build))
+    .pipe(browserSync.reload({stream:true, once:true}));
 });
 
-gulp.task('watch', function(){
-  gulp.watch(paths.sass, ['sass']);
-  // gulp.watch(paths.coffee, ['coffee']);
-  gulp.watch(paths.scripts, ['scripts']);
-})
+gulp.task('browser-sync', function(){
+  browserSync.init(null, {
+    server: {
+      baseDir: "./"
+    }
+  });
+});
 
-gulp.task('default', ['scripts', 'watch']);
+// Reload all Browsers
+gulp.task('bs-reload', function () {
+    browserSync.reload();
+});
+
+gulp.task('default', ['browser-sync'], function(){
+    gulp.watch(paths.scripts, ['scripts']);
+    gulp.watch(paths.sass, ['sass']);
+    gulp.watch("*.html", ['bs-reload']);
+});

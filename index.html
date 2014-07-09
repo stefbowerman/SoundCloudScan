@@ -4,7 +4,6 @@
         <title>SoundCloud Scanner</title>
         <link href='http://fonts.googleapis.com/css?family=Yellowtail|VT323|Open+Sans' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="/build/app.min.css">
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     </head>
     <body>
         <div class="container">
@@ -37,7 +36,7 @@
                                             <div id="radio-volume" class="radio-volume" style="display: none;">
                                                 Vol
                                                 <div class="radio-volume-bar-container">
-                                                    <div class="radio-volume-bar"></div>
+                                                    <div id="radio-volume-bar" class="radio-volume-bar"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -60,7 +59,7 @@
                                 </div>
                                 <div class="radio-screen-grid-overlay"></div>
                             </div>
-                            <div class="button-row-horizontal" >
+                            <div class="button-row-horizontal">
                                 <button class="control-button" data-genre="all">All</button>
                                 <button class="control-button" data-genre="rap">Rap</button>
                                 <button class="control-button" data-genre="dance">Dance</button>
@@ -86,7 +85,10 @@
                 </div>
             </div>
         </div>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/build/jquery-1.11.1.min.js"><\/script>')</script>
         <script type="text/javascript" src="http://connect.soundcloud.com/sdk.js"></script>
+        <script type="text/javascript">window.SC || document.write('<script type="text/javascript" src="/build/soundcloudSDK.js"><\/script>')</script>
         <script type="text/javascript" src="/build/app.min.js"></script>
     </body>
 </html>
